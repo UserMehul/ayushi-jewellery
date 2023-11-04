@@ -1,38 +1,44 @@
-import React from "react";
-import mehul from "../images/mehul.jpg";
-import prangana from "../images/prangana.jpg";
-import malti from "../images/malti.jpg";
-import anshuman from "../images/anshuman.jpg";
-import necklace from "../images/rednecklace.jpeg";
-const cardData = [
-  {
-    imageSrc: anshuman,
-    heading: "Red Japsar",
-    description: "Drawing and Design Faculty",
-    passout: "NIFT(B.Des.)",
-  },
-  {
-    imageSrc: prangana,
-    heading: "Red Japsar",
-    description: "History & English Faculty",
-    passout: "NID (M.Des.), NIFT (B.Des)",
-  },
-  {
-    imageSrc: malti,
-    heading: " Red Japsar",
-    description: "Fine Arts Faculty",
-    passout: "JJ School of Arts(B.A.)",
-  },
-  {
-    imageSrc: mehul,
-    heading: " Red Japsar",
-    description: "Aptitude Faculty",
-    passout: "MNNIT, ALLAHABAD",
-  },
-  // Add more card data as needed
-];
+import React, { useEffect, useState } from "react";
+import sub from '../images/sub.png';
+import add from '../images/add.png'
 
-const Cards = () => {
+const Cards = ({ cardData }) => {
+  const [cart, setCart] = useState({});
+  const [totalCost, setTotalCost] = useState(0);
+
+  const addToCart = (itemId) => {
+    if (cart[itemId]) {
+      setCart({ ...cart, [itemId]: cart[itemId] + 1 });
+    } else {
+      setCart({ ...cart, [itemId]: 1 });
+    }
+  };
+
+  const removeFromCart = (itemId) => {
+    if (cart[itemId] > 1) {
+      setCart({ ...cart, [itemId]: cart[itemId] - 1 });
+    } else {
+      const newCart = { ...cart };
+      delete newCart[itemId];
+      setCart(newCart);
+    }
+  };
+
+ const calculateTotalCost = () => {
+    let cost = 0;
+    for (const itemId in cart) {
+      cost += Number(cart[itemId]) * Number(cardData[itemId].Cost);
+    }
+    console.log("cost: ", Number(cost))
+    return cost;
+  };
+
+  useEffect(() => {
+    setTotalCost(calculateTotalCost());
+  }, [cart, cardData]);
+
+
+
   return (
     <div>
       <div className="text-4xl m-4 p-2">Our Collection</div>
@@ -45,27 +51,51 @@ const Cards = () => {
             {/* Image */}
             <img
               className="h-60 w-full object-cover rounded-xl justify-center"
-              src={necklace}
+              src={card.imageSrc}
               alt=""
             />
             <div className="p-2">
-              {/* Heading */}
-              <h2 className="font-bold text-lg mb-2">{card.heading}</h2>
+              {/* Item */}
+              <h2 className="font-bold text-lg mb-2">{card.Item}</h2>
+
               {/* Description */}
-           <div className="flex-col">   <p className="text-sm text-gray-600"></p>  <h3>Cost $10</h3> </div>
+              <div className="flex-col">
+                <p className="text-sm text-gray-600">{card.Description}</p>
+                <h3>Cost ${card.Cost}</h3>
+                <div>{card.Category}</div>
+              </div>
             </div>
-            {/* CTA */}
+
+            {/* Quantity Controls */}
+            {cart[index] && (
+              <div className="flex flex-row p-2 justify-center items-center">
+                <div className="flex">
+                  <button onClick={() => removeFromCart(index)}>
+                    <img src={sub} alt="Subtract" style={{width: '20px', height:'20px', marginRight: '10px'}}/>
+                  </button>
+                </div>
+                <h1>{cart[index]}</h1>
+                <button onClick={() => addToCart(index)}>  
+                                  <img src={add} alt="Add" style={{width: '20px', height:'20px', marginLeft: '10px'}} />
+</button>
+              </div>
+            )}
+
+            {/* Add to Cart */}
             <div className="m-2">
-              <a
-                href="#"
+              <button
+                onClick={() => addToCart(index)}
                 className="text-white bg-red-300 px-3 py-1 rounded-md hover:bg-purple-700"
               >
-                Purchase
-              </a>
+                Add to Cart
+              </button>
             </div>
           </div>
         ))}
       </div>
+      
+      {/* Display the total cost */}
+      <div className="text-xl font-bold">Total Cost: ${totalCost}</div>
     </div>
   );
 };
