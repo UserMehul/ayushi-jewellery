@@ -15,31 +15,28 @@ function App() {
     Item: "Baroque",
     Category: "Beads",
     Cost: 10,
-    description: "Drawing and Design Faculty",
-    passout: "NIFT(B.Des.)",
+    
   },
   {
     imageSrc: blueagate,
     Item: "Blue Agate",
     Category: "Beads",
     Cost: 20,
-    description: "History & English Faculty",
-    passout: "NID (M.Des.), NIFT (B.Des)",
+   
   },
   {
     imageSrc: faux,
     Item: " Faux Pearl Necklace",
     Category: "Necklace",
     Cost: 30,
-    description: "Fine Arts Faculty",
-    passout: "JJ School of Arts(B.A.)",
+  
   },
   {
     imageSrc: greenjasper,
     Item: " Red Japsar",
-    Category: "Ear Rings",
-    description: "Aptitude Faculty",
-    passout: "MNNIT, ALLAHABAD",
+    Category: "Rings",
+    Cost: 30,
+    
   },
 ];
   const [count, setCount] = useState(0)
@@ -68,7 +65,7 @@ function App() {
   return (
     <>
      <h1 className="text-3xl font-bold underline">
-      Ayushi Semi-Precious Jewellery!
+      Ayushi Semi-Precious Jewellery
     </h1>
     <Categories filterCards={filterCardsByCategory} />
     <Cards cardData={filteredCardData}/>
